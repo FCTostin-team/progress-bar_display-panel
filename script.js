@@ -18,11 +18,6 @@ function applyLocale(lang) {
   currentLang = lang;
   document.documentElement.lang = lang;
 
-  const langToggle = document.getElementById('lang-toggle');
-  if (langToggle) {
-    langToggle.textContent = lang.toUpperCase();
-  }
-
   const langSelect = document.getElementById('lang-select');
   if (langSelect) {
     langSelect.value = lang;
@@ -430,23 +425,10 @@ document.addEventListener('DOMContentLoaded', function() {
     populateItemSelector();
     populateFontSelector();
 
-    const langToggle = document.getElementById('lang-toggle');
-    const langMenu = document.getElementById('lang-menu');
     const langSelect = document.getElementById('lang-select');
-
-    langToggle.addEventListener('click', function() {
-      langMenu.classList.toggle('hidden');
-    });
 
     langSelect.addEventListener('change', function(e) {
       applyLocale(e.target.value);
-      langMenu.classList.add('hidden');
-    });
-
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.lang-control')) {
-        langMenu.classList.add('hidden');
-      }
     });
 
     applyLocale(langSelect.value || 'ru');
