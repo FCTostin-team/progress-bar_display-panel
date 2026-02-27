@@ -8,10 +8,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="lang-control">
+        <button id="lang-toggle" class="lang-button" type="button">RU</button>
+        <div id="lang-menu" class="lang-menu hidden">
+            <select id="lang-select" class="lang-dropdown" aria-label="Выбор языка">
+                <option value="ru">Русский</option>
+                <option value="en">English</option>
+                <option value="uk">Українська</option>
+                <option value="kk">Қазақша</option>
+                <option value="cs">Čeština</option>
+                <option value="nl">Nederlands</option>
+                <option value="sv">Svenska</option>
+                <option value="de">Deutsch</option>
+                <option value="pl">Polski</option>
+                <option value="fr">Français</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+            </select>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div class="header-logo">
-                <img src="https://i.ibb.co/Hp44999c/blueprint-book.png" style="width: 30px; height: 30px;" />
+                <img src="https://i.ibb.co/Hp44999c/blueprint-book.png" class="header-logo-img" alt="Blueprint logo">
                 <h1>PROGRESS BAR DISPLAY PANEL</h1>
             </div>
             <div>
@@ -24,7 +44,7 @@
 
         <div class="blueprint-panel">
             <div class="panel-header">
-                <h3 class="panel-title">Выберите вариант чертежа</h3>
+                <h3 class="panel-title" data-i18n="titleBlueprint">Выберите вариант чертежа</h3>
             </div>
             <select id="blueprintSelector"></select>
         </div>
@@ -33,14 +53,14 @@
             <div class="panel-header">
               <h3 class="panel-title">
                 <span class="icon icon-blueprint"></span>
-                Выберите предмет
+                <span data-i18n="titleItem">Выберите предмет</span>
               </h3>
             </div>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div id="item-preview" style="width: 50px; height: 50px; padding: 1px; border: 1px solid #444; background-color: #0a0a0a; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <img id="selected-item-icon" src="" alt="Иконка" style="width: 40px; height: 40px; image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor;">
+            <div class="item-row">
+                <div id="item-preview" class="item-preview">
+                    <img id="selected-item-icon" src="" alt="Иконка" class="selected-item-icon">
                 </div>
-                <div style="flex-grow: 1;">
+                <div class="item-select-wrap">
                     <select id="itemSelector"></select>
                 </div>
             </div>
@@ -48,10 +68,10 @@
 
         <div class="blueprint-panel">
             <div class="panel-header">
-                <h3 class="panel-title">Градиент</h3>
+                <h3 class="panel-title" data-i18n="titleGradient">Градиент</h3>
             </div>
             <div>
-                <label for="gradientPoints">Количество точек градиента</label>
+                <label for="gradientPoints" data-i18n="labelGradientPoints">Количество точек градиента</label>
                 <select id="gradientPoints">
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -64,34 +84,33 @@
                     <option value="10">10</option>
                 </select>
             </div>
-            <div id="color-pickers-container" style="display: flex; justify-content: space-between; gap: 10px; margin-top: 15px; margin-bottom: 10px;">
-            </div>
-            <div id="gradient-preview" style="height: 30px; border: 1px solid #444; border-radius: 4px; margin-top: 10px;"></div>
+            <div id="color-pickers-container" class="color-pickers"></div>
+            <div id="gradient-preview" class="gradient-preview"></div>
         </div>
 
         <div class="blueprint-panel">
             <div class="panel-header">
-                <h3 class="panel-title">Шрифт</h3>
+                <h3 class="panel-title" data-i18n="titleFont">Шрифт</h3>
             </div>
             <select id="fontSelector"></select>
         </div>
-        
+
         <div class="blueprint-panel">
           <div class="panel-header">
             <h3 class="panel-title">
               <span class="icon icon-edit"></span>
-              JSON редактор
+              <span data-i18n="titleJsonEditor">JSON редактор</span>
             </h3>
           </div>
           <div class="search-container">
             <input type="text" id="searchInput" class="search-input" placeholder="Поиск в JSON...">
             <button id="searchBtn" onclick="searchInJson()">
-              <span class="icon icon-search"></span>Найти
+              <span class="icon icon-search"></span><span data-i18n="btnFind">Найти</span>
             </button>
-            <button id="nextBtn" onclick="findNextMatch()">Следующий</button>
-            <button id="prevBtn" onclick="findPrevMatch()">Предыдущий</button>
+            <button id="nextBtn" onclick="findNextMatch()" data-i18n="btnNext">Следующий</button>
+            <button id="prevBtn" onclick="findPrevMatch()" data-i18n="btnPrev">Предыдущий</button>
           </div>
-          
+
           <div class="json-container">
             <div class="line-numbers" id="lineNumbers"></div>
             <div id="jsonDisplay"></div>
@@ -99,12 +118,12 @@
           </div>
           <div class="button-group">
               <button onclick="encodeJson()" class="button-primary">
-                <span class="icon icon-export"></span>Encode
+                <span class="icon icon-export"></span><span>Encode</span>
               </button>
-              <button id="toggle-json-editor-size" onclick="toggleJsonEditorSize()">Развернуть</button>
+              <button id="toggle-json-editor-size" onclick="toggleJsonEditorSize()" data-i18n="btnExpand">Развернуть</button>
           </div>
         </div>
-        
+
         <div class="blueprint-panel">
           <div class="panel-header">
             <h3 class="panel-title">
@@ -113,11 +132,11 @@
             </h3>
           </div>
           <textarea id="encodedOutput" readonly></textarea>
-          <div class="button-group" style="margin-top: -5px;">
-            <button onclick="copyEncodedBlueprint()">Скопировать</button>
+          <div class="button-group encoded-actions">
+            <button onclick="copyEncodedBlueprint()" data-i18n="btnCopy">Скопировать</button>
           </div>
         </div>
-        
+
         <div class="footer">
           <div class="footer-links">
             <p>🐞 <a href="https://www.youtube.com/@FCT-Ostin" target="_blank">YouTube</a></p>
@@ -127,14 +146,26 @@
             <p>🪐 <a href="https://boosty.to/ostinfct" target="_blank">Boosty</a></p>
           </div>
           <div class="footer-links">
-            <p>Руководство Steam: <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3561307760" target="_blank">Чертеж дисплея с прогресс-баром</a></p>
-            <p>Создано при поддержке Телеграм сообщества FCTostin</p>
+            <p data-i18n="footerGuide">Руководство Steam: <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3561307760" target="_blank">Чертеж дисплея с прогресс-баром</a></p>
+            <p data-i18n="footerSupport">Создано при поддержке Телеграм сообщества FCTostin</p>
           </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script src="data.js"></script>
+    <script src="profiles/ru.js"></script>
+    <script src="profiles/en.js"></script>
+    <script src="profiles/uk.js"></script>
+    <script src="profiles/kk.js"></script>
+    <script src="profiles/cs.js"></script>
+    <script src="profiles/nl.js"></script>
+    <script src="profiles/sv.js"></script>
+    <script src="profiles/de.js"></script>
+    <script src="profiles/pl.js"></script>
+    <script src="profiles/fr.js"></script>
+    <script src="profiles/zh.js"></script>
+    <script src="profiles/ja.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
