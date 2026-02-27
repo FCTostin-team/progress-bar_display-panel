@@ -2,6 +2,53 @@ let isEditorMode = false;
 let currentMatches = [];
 let currentMatchIndex = -1;
 let isJsonEditorExpanded = false;
+let currentLang = 'ru';
+
+function t(key) {
+  const locales = window.APP_LOCALES || {};
+  if (locales[currentLang] && locales[currentLang][key]) return locales[currentLang][key];
+  if (locales.ru && locales.ru[key]) return locales.ru[key];
+  return key;
+}
+
+function applyLocale(lang) {
+  const locales = window.APP_LOCALES || {};
+  if (!locales[lang]) return;
+
+  currentLang = lang;
+  document.documentElement.lang = lang;
+
+  const langToggle = document.getElementById('lang-toggle');
+  if (langToggle) {
+    langToggle.textContent = lang.toUpperCase();
+  }
+
+  const langSelect = document.getElementById('lang-select');
+  if (langSelect) {
+    langSelect.value = lang;
+  }
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const value = t(key);
+    if (key === 'footerGuide') {
+      el.innerHTML = value;
+      return;
+    }
+    el.textContent = value;
+  });
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.placeholder = t('searchPlaceholder');
+  }
+
+  const toggleSizeButton = document.getElementById('toggle-json-editor-size');
+  if (toggleSizeButton) {
+    toggleSizeButton.textContent = isJsonEditorExpanded ? t('btnCollapse') : t('btnExpand');
+  }
+}
+
 
 function adjustFontSize(elementId) {
   const element = document.getElementById(elementId);
@@ -86,11 +133,11 @@ function searchInJson() {
     if (currentMatches.length > 0) {
       findNextMatch();
     } else {
-      alert('Совпадений не найдено!');
+      alert(t('alertNoMatches'));
     }
   } catch (e) {
     console.error("Error in searchInJson:", e);
-    alert('Ошибка при поиске: ' + e.message);
+    alert(t('alertSearchError') + e.message);
   }
 }
 
@@ -183,7 +230,7 @@ function updateEncodedOutput(json) {
     encodedOutput.value = '0' + base64;
     adjustFontSize('encodedOutput');
   } catch (e) {
-    document.getElementById('encodedOutput').value = 'Encoding error: ' + e.message;
+    document.getElementById('encodedOutput').value = t('alertEncodingError') + e.message;
   }
 }
 
@@ -277,7 +324,7 @@ function updateBlueprint() {
         }
     } catch(e) {
         console.error('Blueprint generation error:', e);
-        alert('Случилась ошибка при генерации чертежа: ' + e.message);
+        alert(t('alertBlueprintError') + e.message);
     }
 }
 
@@ -348,7 +395,7 @@ function updateColorPickersUI() {
 function toggleJsonEditorSize() {
     isJsonEditorExpanded = !isJsonEditorExpanded;
     const button = document.getElementById('toggle-json-editor-size');
-    button.textContent = isJsonEditorExpanded ? 'Свернуть' : 'Развернуть';
+    button.textContent = isJsonEditorExpanded ? t('btnCollapse') : t('btnExpand');
     updateLineNumbers();
 }
 
@@ -362,7 +409,7 @@ function encodeJson() {
       document.getElementById('jsonEditor').value = formattedJson;
     }
   } catch (e) {
-    alert('Error encoding: ' + e.message);
+    alert(t('alertEncodingError') + e.message);
   }
 }
 
@@ -372,7 +419,7 @@ function copyEncodedBlueprint() {
   document.execCommand('copy');
   const button = document.querySelector('button[onclick="copyEncodedBlueprint()"]');
   const originalText = button.textContent;
-  button.textContent = 'Скопировано!';
+  button.textContent = t('btnCopied');
   setTimeout(() => {
     button.textContent = originalText;
   }, 1500);
@@ -382,24 +429,45 @@ document.addEventListener('DOMContentLoaded', function() {
     populateBlueprintSelector();
     populateItemSelector();
     populateFontSelector();
-    
+
+    const langToggle = document.getElementById('lang-toggle');
+    const langMenu = document.getElementById('lang-menu');
+    const langSelect = document.getElementById('lang-select');
+
+    langToggle.addEventListener('click', function() {
+      langMenu.classList.toggle('hidden');
+    });
+
+    langSelect.addEventListener('change', function(e) {
+      applyLocale(e.target.value);
+      langMenu.classList.add('hidden');
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.lang-control')) {
+        langMenu.classList.add('hidden');
+      }
+    });
+
+    applyLocale(langSelect.value || 'ru');
+
     document.getElementById('blueprintSelector').addEventListener('change', updateBlueprint);
     document.getElementById('itemSelector').addEventListener('change', updateBlueprint);
     document.getElementById('gradientPoints').addEventListener('change', updateColorPickersUI);
     document.getElementById('fontSelector').addEventListener('change', updateBlueprint);
     document.getElementById('jsonEditor').addEventListener('input', updateLineNumbers);
-    
+
     document.getElementById('searchInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') searchInJson();
     });
-    
+
     document.getElementById('jsonDisplay').addEventListener('click', function() {
       if (!isEditorMode) toggleEditorMode();
     });
-    
+
     document.getElementById('jsonEditor').addEventListener('blur', function() {
       if (isEditorMode) toggleEditorMode();
     });
-    
+
     updateColorPickersUI();
 });
