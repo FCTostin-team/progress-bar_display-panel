@@ -1,9 +1,14 @@
-# FCT Progress Bar Display Panel
+# FCT Progress Bar Display Panel <a href="https://github.com/OstinUA"><img align="right" src="https://img.shields.io/badge/OstinUA-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
 
-[![Version](https://img.shields.io/badge/version-v5.0-4c1?style=for-the-badge)](#)
-[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge)](LICENSE)
-[![Platform: Web](https://img.shields.io/badge/platform-webapp-0a7?style=for-the-badge)](#technology-stack)
-[![Language Packs](https://img.shields.io/badge/i18n-12_languages-8a2be2?style=for-the-badge)](#features)
+![Factorio: 2.0+](https://img.shields.io/badge/Factorio-2.0%2B%20%2F%20Space%20Age-orange?style=for-the-badge)
+
+![Platform: Web](https://img.shields.io/badge/Platform-Web_App-0ea5e9?style=for-the-badge)
+[![Frontend: Vanilla JS](https://img.shields.io/badge/Frontend-Vanilla%20JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111)](script.js)
+[![Styles: CSS3](https://img.shields.io/badge/Styles-CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](style.css)
+[![Markup: HTML5](https://img.shields.io/badge/Markup-HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](index.html)
+![Status: Active](https://img.shields.io/badge/Status-Active-22c55e?style=for-the-badge)
+![Coverage: Manual](https://img.shields.io/badge/Coverage-Manual%20Validation-lightgrey?style=for-the-badge)
+[![i18n](https://img.shields.io/badge/i18n-multi--language-2ea44f?style=for-the-badge)](#features)
 
 A production-ready, browser-based utility for building and tweaking Factorio `progress_bar` display-panel blueprints with instant JSON editing, gradient controls, and one-click blueprint encoding.
 
@@ -246,6 +251,6 @@ Project created with the support of the FCTostin community.
 
 ## Contacts
 
-- Community updates and releases: YouTube / Telegram links above.
-- Bug reports and feature proposals: open a GitHub Issue.
+- GitHub: [OstinUA](https://github.com/OstinUA)
+- Team page: [FCTostin-team](https://github.com/FCTostin-team)
 - Contribution process: see [`CONTRIBUTING.md`](CONTRIBUTING.md).
